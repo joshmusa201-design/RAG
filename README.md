@@ -61,16 +61,6 @@ Building both versions helped me understand:
 
 One of the biggest lessons I learned was that RAG quality depends on the entire pipeline. If important information is lost during document extraction or retrieval, the LLM cannot reliably recover it later.
 
-## 🔮 Future Improvements
-
-- Improve retrieval quality
-- Add source citations
-- Add metadata filtering
-- Experiment with reranking
-- Add RAG evaluation
-- Support more news sources
-- Improve handling of recent information
-
 ## 👤 Author
 
 Built by Joshua while learning AI/ML and Retrieval-Augmented Generation.
