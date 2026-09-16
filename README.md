@@ -12,7 +12,7 @@ RAG V1 uses an Apple document as the knowledge source.
 
 ## Pipeline
 
-```text
+text
 Apple Document
       ↓
 PyMuPDF4LLM
@@ -58,4 +58,7 @@ Relevant Context
 Hugging Face LLM
       ↓
 Answer
+<<<<<<< HEAD
 
+=======
+>>>>>>> 73b2d2b00ead29cc9ece6324a098a33d589a18a9
