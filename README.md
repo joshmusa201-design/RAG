@@ -10,7 +10,7 @@ This project contains two versions, showing my progression from a document-based
 
 RAG V1 uses an Apple document as the knowledge source.
 
-### Pipeline
+## Pipeline
 
 ```text
 Apple Document
@@ -30,7 +30,6 @@ Similarity Search
 Hugging Face LLM
       ↓
 Answer
-
 ## 📰 RAG V2 — News RAG
 
 RAG V2 extends the project from a static document to web-based information retrieval.
@@ -59,3 +58,4 @@ Relevant Context
 Hugging Face LLM
       ↓
 Answer
+
