@@ -1,4 +1,4 @@
-# am gonna be creating a RAG model for question answering using langchain and huggingface transformers. The model will be trained on a dataset of questions and answers, and will be able to generate answers to new questions based on the training data.
+# v2 of the rag. This is going to be a finance new rag. Wanted using a api to embedd my text because v1 was slow and its because am running it locally, but couldnt stand the api cost so am still gonna be running it locally here
 import httpx
 from pathlib import Path
 import streamlit as stl
@@ -9,35 +9,35 @@ import chromadb
 from huggingface_hub import InferenceClient
 from docling.document_converter import DocumentConverter
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from tavily import TavilyClient
+
+load_dotenv()
 
 # uing doclings library to create a structured document for the RAG model
 import pymupdf4llm
 
 
-md_text = pymupdf4llm.to_markdown(r"C:\Users\LENOVO\Desktop\rag\2026_apple_reports.pdf")
-me = md_text
-print(me)
+safe = input("Ask me a question🤗: ")
+tavily_client = TavilyClient(api_key=os.environ["TAVILY_KEY"])
+response = tavily_client.search(safe)
 
-#pathlib.Path("4llm-output.txt").write_bytes(md_text.encode())
-
+result = response["results"][0]["content"]
 
 
 text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0, add_start_index=True)
 bucket = []
 
 
-texts = text_splitter.split_text(me)
+texts = text_splitter.split_text(result)
 for i, text in enumerate(texts):
-    moving = f"Chunk {i + 1}: {[text]}\n"
+    moving = f"{[text]}\n"
     bucket.append(moving)
 
-ids = [f"id{i + 1}" for i in range(len(bucket))]
+ids = [f"id{y + 1}" for y in range(len(bucket))]
+meta = [{"source":f"source{u + 1}"} for u in range(len(bucket))]
+ 
 
-
-
-load_dotenv()
-
-user = input("Ask me a question🤗: ")
+print("CHUNKING:", bucket)
 
 # using a pre-trained model from HuggingFace to generate embeddings for the sentences
 model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
@@ -56,7 +56,7 @@ collection.add(
     ids=ids,
     embeddings=embeddings.tolist(),
     documents=sentences,
-    metadatas=[{"source": "source1"}, {"source": "source2"}, {"source": "source3"}, {"source": "source4"}, {"source": "source5"}, {"source": "source6"}, {"source": "source7"}, {"source": "source7"}]
+    metadatas= meta#[{"source": "source1"}, {"source": "source2"}, {"source": "source3"}, {"source": "source4"}, {"source": "source5"}, {"source": "source6"}, {"source": "source7"}, {"source": "source7"}]
     )
 
 class RAGModel:
@@ -106,11 +106,6 @@ class RAGModel:
 
 
 
-joshua = RAGModel(collection, user)
+joshua = RAGModel(collection, safe)
 running = joshua.generate_answer()
-fuck = joshua.retrieve()
-print("Retrieved, raw context:", fuck)
 print("Generated answer:", running)
-
-
-
